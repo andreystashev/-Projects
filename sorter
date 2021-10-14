@@ -1,0 +1,49 @@
+#include <iostream>
+#include <cstring>
+#include <cmath>
+#include <chrono>
+#include <ctime>
+#include <cstdio>
+
+const int string_count = pow(10,6);
+int j;
+int i;
+void sort(char **pMassive) {
+	std::cout<< **pMassive<< std::endl;
+	char *reserve;
+		for (j = 0; j < string_count; j++) {
+			for (i = string_count - 1; i > j; i--) {
+				if (strcmp(pMassive[i - 1], pMassive[i]) > 0) {
+					reserve = pMassive[i];
+					pMassive[i] = pMassive[i - 1];
+					pMassive[i - 1] = reserve;
+				}
+			}
+			if (j<=100) std::cout << j << " sorted " << pMassive[j] << std::endl;
+				else break;
+		}
+}
+
+int main() {
+	auto begin = std::chrono::steady_clock::now();
+	
+	char **pMassive = new char*[string_count];
+	for (i = 0; i < string_count; i++) pMassive[i] = new char[11] {0};
+	
+	char symbols[27]  = "abcdefghijklmnopqrstuvwxyz";
+	for (j = 0; j < string_count; j++) {
+		for (i = 0; i < 10; i++) {
+			pMassive[j][i] = symbols[rand() % 26];
+
+		}
+	}
+	sort(pMassive);
+	for (i = 0; i < string_count; i++) delete[] pMassive[i];
+	delete[]pMassive;
+
+	auto end = std::chrono::steady_clock::now();
+	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+	std::cout << "Chrono time: " << elapsed_ms.count() << " ms\n";
+
+	return 0;
+}
